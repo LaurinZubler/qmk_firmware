@@ -14,28 +14,39 @@ GNU General Public License for more details. You should have received a copy of 
 
 #include QMK_KEYBOARD_H
 
+// idea: change color of keys on diffrent layes.
 enum layer{
-    letter,
-    special,
-    number,
-    function,
+    L_LETTERS,
+    L_SPECIALS,
+    L_NUMBERS,
+    L_FUNCTIONS,
 };
 
+// idea: change color of all/shift key when caps enabled.
+enum tap_dance{
+    TD_SHIFT_CAPS,
+};
+
+tap_dance_action_t tap_dance_actions[] = {
+    [TD_SHIFT_CAPS] = ACTION_TAP_DANCE_DOUBLE(KC_LSFT, KC_CAPS),
+};
+
+
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
-    [letter] = LAYOUT_split_3x6_3_ex2(
+    [L_LETTERS] = LAYOUT_split_3x6_3_ex2(
   //,--------------------------------------------------------------.  ,--------------------------------------------------------------.
        KC_TAB,    KC_Q,    KC_W,    KC_E,    KC_R,    KC_T, XXXXXXX,    XXXXXXX,    KC_Z,    KC_U,    KC_I,    KC_O,   KC_P,  KC_BSPC,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
        KC_ESC,    KC_A,    KC_S,    KC_D,    KC_F,    KC_G, KC_MPLY,    XXXXXXX,    KC_H,    KC_J,    KC_K,    KC_L, KC_SCLN,  KC_ENT,
   //|--------+--------+--------+--------+--------+--------+--------'  '--------+--------+--------+--------+--------+--------+--------|
-      KC_LSFT,    KC_Y,    KC_X,    KC_C,    KC_V,    KC_B,                         KC_N,    KC_M, KC_COMM,  KC_DOT, KC_SLSH, KC_LSFT,
+TD(TD_SHIFT_CAPS),KC_Y,    KC_X,    KC_C,    KC_V,    KC_B,                         KC_N,    KC_M, KC_COMM,  KC_DOT, KC_SLSH, TD(TD_SHIFT_CAPS),
   //|--------+--------+--------+--------+--------+--------+--------.  ,--------+--------+--------+--------+--------+--------+--------|
-                                          KC_LCTL, KC_LGUI, KC_LALT,    LT(special, KC_SPC), LT(number, KC_HOME),  KC_END
+                                          KC_LCTL, KC_LGUI, KC_LALT,    LT(L_SPECIALS, KC_SPC), LT(L_NUMBERS, KC_HOME), LT(L_FUNCTIONS, KC_END)
                                       //`--------------------------'  `--------------------------------------------------'
 
   ),
 
-    [special] = LAYOUT_split_3x6_3_ex2(
+    [L_SPECIALS] = LAYOUT_split_3x6_3_ex2(
   //,--------------------------------------------------------------.  ,--------------------------------------------------------------.
       _______, KC_PPLS,   KC_AT, KC_PAST, XXXXXXX, KC_PERC, XXXXXXX,    _______, KC_AMPR, XXXXXXX, XXXXXXX, KC_PEQL, KC_MINS, KC_QUOT,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
@@ -47,7 +58,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                       //`--------------------------'  `--------------------------'
   ),
 
-    [number] = LAYOUT_split_3x6_3_ex2(
+    [L_NUMBERS] = LAYOUT_split_3x6_3_ex2(
   //,--------------------------------------------------------------.  ,--------------------------------------------------------------.
       _______,    KC_1,    KC_2,    KC_3,    KC_4,    KC_5, XXXXXXX,    _______,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0, _______,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
@@ -59,7 +70,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                       //`--------------------------'  `--------------------------'
   ),
 
-    [function] = LAYOUT_split_3x6_3_ex2(
+    [L_FUNCTIONS] = LAYOUT_split_3x6_3_ex2(
   //,--------------------------------------------------------------.  ,--------------------------------------------------------------.
       QK_BOOT, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
